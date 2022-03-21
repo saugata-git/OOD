@@ -24,8 +24,8 @@ public:
     ~ELevator();
     ELevator(const ELevator& other_ele);
     ELevator& operator=(const ELevator& other_ele);
-    std::string getDirection();
 
+    const std::string& getDirection() const;
     void ride();
     void process_request(int floor_request);
 };

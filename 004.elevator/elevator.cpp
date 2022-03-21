@@ -42,7 +42,7 @@ ElevatorSystem::ELevator& ElevatorSystem::ELevator::operator=(const ElevatorSyst
    return;
 }
 
-std::string ElevatorSystem::ELevator::getDirection(){
+const std::string& ElevatorSystem::ELevator::getDirection() const{
     if(direction == Direction::UP){
         return "UP";
     }
@@ -54,7 +54,7 @@ std::string ElevatorSystem::ELevator::getDirection(){
     }
 }
 
-void ElevatorSystem::ELevator::ride(){
+void ElevatorSystem::ELevator::ride() {
 	set<int>::iterator itr;
 	if(direction == Direction::UP){
 		itr = pushed_floors->begin();
@@ -89,7 +89,7 @@ void ElevatorSystem::ELevator::ride(){
 	return;
 }
 
-void ElevatorSystem::ELevator::process_request(int floor_request){
+void ElevatorSystem::ELevator::process_request(int floor_request) const{
 	if (direction == Direction::UP &&  floor_request < current_floor){
 		cout << "Sorry, Elevator " << id << " is going up right now." << endl;
 	}
