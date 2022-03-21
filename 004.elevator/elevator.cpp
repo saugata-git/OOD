@@ -3,25 +3,26 @@
 #include "elevator.h"
 using namespace std;
 
-ELevator::ELevator(){
+
+ElevatorSystem::ELevator::ELevator(){
     floors = 0;
     current_floor = 0;
     direction = Direction::IDLE;
     pushed_floors = new set<int>;
 }
 
-ELevator::ELevator(int floors){
+ElevatorSystem::ELevator::ELevator(int floors){
     this->floors = floors;
     current_floor = 0 ;
     direction = Direction::IDLE;
     pushed_floors = new set<int>;
 }
 
-ELevator::~ELevator(){
+ElevatorSystem::ELevator::~ELevator(){
     delete pushed_floors;
 }
 
-ELevator::ELevator(const ELevator& other_ele){
+ElevatorSystem::ELevator::ELevator(const ElevatorSystem::ELevator& other_ele){
     floors = other_ele.floors;
     current_floor = other_ele.current_floor;
     direction = other_ele.direction;
@@ -30,7 +31,7 @@ ELevator::ELevator(const ELevator& other_ele){
     return;
 }
 
-ELevator& ELevator::operator=(const ELevator& other_ele){
+ElevatorSystem::ELevator& ElevatorSystem::ELevator::operator=(const ElevatorSystem::ELevator& other_ele){
    if( &other_ele != this){
         floors = other_ele.floors;
         current_floor = other_ele.current_floor;
@@ -41,7 +42,7 @@ ELevator& ELevator::operator=(const ELevator& other_ele){
    return;
 }
 
-std::string ELevator::getDirection(){
+std::string ElevatorSystem::ELevator::getDirection(){
     if(direction == Direction::UP){
         return "UP";
     }
@@ -53,44 +54,34 @@ std::string ELevator::getDirection(){
     }
 }
 
-void Elevator::setId(std::string id){
-	this->id = id;
-	return;
-}
-
-std::string Elevator::getId() {
-	return id;
-}
-
-
-void Elevator::ride(){
-	int i;
+void ElevatorSystem::ELevator::ride(){
+	set<int>::iterator itr;
 	if(direction == Direction::UP){
-		i = 0;
+		itr = pushed_floors->begin();
 	}
 	else{
-		i = pushed_floors.size();
+		itr = pushed_floors->end();
 	}
-	while(!pushed_floors.empty() && direction != Direction::IDLE){
+	while(!pushed_floors->empty() && direction != Direction::IDLE){
 		if (direction == Direction::UP){
 			std::cout <<"Elevator " << id << " going up!" << endl;
-			current_floor = pushed_floors[i];
-			std::cout << "Elevator" << id << " stopping at floor:" << pushed_floors[i] << endl;
+			current_floor = *itr;
+			std::cout << "Elevator" << id << " stopping at floor:" << current_floor << endl;
 			std::cout << "Press a button to go to a desired floor." << endl;
 			int floor_request;
 			std::cin >> floor_request;
 			process_request(floor_request);
-			i++;
+			itr++;
 		}
 		else{
-			cout <<"Elevator " << id << " going up!" << endl;
-			current_floor = pushed_floors[i];
-			std::cout << "Elevator" << id << " stopping at floor:" << pushed_floors[i] << endl;
+			cout <<"Elevator " << id << " going down!" << endl;
+			current_floor = *itr;
+			std::cout << "Elevator" << id << " stopping at floor:" << current_floor << endl;
 			std::cout << "Press a button to go to a desired floor." << endl;
 			int floor_request;
 			std::cin >> floor_request;
 			process_request(floor_request);
-			i--;
+			itr--;
 		}
 	}
 	cout << "Elevator " << id << " is returning to idle service now." << endl;
@@ -98,10 +89,7 @@ void Elevator::ride(){
 	return;
 }
 
-
-
-
-void Elevator::process_request(int floor_request){
+void ElevatorSystem::ELevator::process_request(int floor_request){
 	if (direction == Direction::UP &&  floor_request < current_floor){
 		cout << "Sorry, Elevator " << id << " is going up right now." << endl;
 	}
@@ -109,7 +97,7 @@ void Elevator::process_request(int floor_request){
 		cout << "Sorry, Elevator " << id << " is going down right now." << endl;
 	}
 	else{
-		pushed_floors.insert(floor_request);
+		pushed_floors->insert(floor_request);
 		cout << "New request to go to floor " << floor_request << endl;
 	}
 	return;
