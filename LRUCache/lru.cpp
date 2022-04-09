@@ -48,10 +48,10 @@ public:
            deleteNode(node);
            addToHead(node);
            cout<<"Got the value : " << result << " for the key: " << key<<endl; 
-		   return result;  
+	   return result;  
        }
        cout<<"Did not get any value" << " for the key: " << key<<endl; 
-	   return -1; 
+       return -1; 
     }
 
 
